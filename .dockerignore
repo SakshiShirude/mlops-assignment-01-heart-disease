@@ -1,0 +1,12 @@
+.git
+.venv
+__pycache__
+.pytest_cache
+.ruff_cache
+.DS_Store
+data
+mlflow.db*
+mlruns
+mlartifacts
+screenshots
+notebooks
