@@ -7,6 +7,8 @@
 - `api_docs.png` shows the FastAPI OpenAPI page.
 - `api_predict.png` shows a successful local `/predict` request and response.
 
-These captures show local execution and the successful hosted GitHub Actions run. Docker and Kubernetes screenshots are not available because those tools were not run in this workspace.
+These captures show local execution and hosted CI evidence. The container response JSON and request logs were produced by the successful Docker smoke test on GitHub's Linux runner; Kubernetes was not deployed.
 
 - `github_actions_success.png` shows the successful hosted CI run and uploaded artifact. [Open run #1](https://github.com/SakshiShirude/mlops-assignment-01-heart-disease/actions/runs/39112997090).
+- `docker_container_ci_run.png` shows the successful workflow run that built and started the Docker image. [Open run #6](https://github.com/SakshiShirude/mlops-assignment-01-heart-disease/actions/runs/39113734951).
+- `container_health.json` and `container_predict.json` contain the actual container endpoint responses; `container_logs.txt` records Uvicorn startup and HTTP 200 request logs.

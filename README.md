@@ -87,6 +87,8 @@ curl http://localhost:8000/health
 ```
 Or use `docker compose up --build`. Build only after the trained model artifact exists. Do not commit real patient information or secrets.
 
+The hosted workflow also builds this image, starts the container, and checks `/health` and `/predict` with the sample payload. The successful run and its response/log evidence are linked below. Docker is not installed on the local Mac workspace, so that run used GitHub's Linux runner.
+
 ## Kubernetes (local Minikube / Docker Desktop)
 
 Build the image into the local cluster's image store. For Minikube:
@@ -103,7 +105,7 @@ For Docker Desktop Kubernetes, build the image locally and ensure the cluster ca
 
 ## CI/CD
 
-`.github/workflows/ci.yml` runs linting, unit tests, data download, EDA, model training, and artifact upload on pushes, pull requests, and manual dispatch. The first hosted run passed: [MLOps CI run #1](https://github.com/SakshiShirude/mlops-assignment-01-heart-disease/actions/runs/39112997090). Dataset retrieval needs outbound network access; failed lint, test, or training steps fail the workflow.
+`.github/workflows/ci.yml` runs linting, unit tests, data download, EDA, model training, Docker build/container smoke checks, and artifact upload on pushes, pull requests, and manual dispatch. [MLOps CI run #6](https://github.com/SakshiShirude/mlops-assignment-01-heart-disease/actions/runs/39113734951) passed, including container `/health` and `/predict`. Dataset retrieval needs outbound network access; failed lint, test, training, or container checks fail the workflow.
 
 ## Monitoring
 
@@ -113,10 +115,10 @@ The API emits structured operational log fields for each request and offers `/he
 
 - [x] EDA plots and model metrics were generated under `artifacts/`.
 - [x] Local MLflow run/metric and FastAPI screenshots are in `screenshots/`.
-- [x] Local pytest and Ruff checks passed; hosted GitHub Actions run #1 passed (see `screenshots/github_actions_success.png`).
-- [ ] Capture a Docker build and container `/health` plus `/predict` evidence.
+- [x] Local pytest and Ruff checks passed; hosted GitHub Actions run #6 passed (see `screenshots/docker_container_ci_run.png`).
+- [x] GitHub Actions built and ran the Docker container; response bodies and container logs are saved under `screenshots/`.
 - [ ] Capture `kubectl get pods,svc` and a successful Kubernetes endpoint request.
 - [ ] Record the requested short pipeline video after Docker/Kubernetes steps are available.
 - [x] GitHub repository: https://github.com/SakshiShirude/mlops-assignment-01-heart-disease. Local API instructions are provided above; no public endpoint was deployed.
 
-The repository is published at https://github.com/SakshiShirude/mlops-assignment-01-heart-disease. Docker and Kubernetes CLIs are unavailable in this workspace, so those execution steps remain pending and no deployment is claimed.
+The repository is published at https://github.com/SakshiShirude/mlops-assignment-01-heart-disease. The local Mac has no Docker or Kubernetes CLI; the Docker build and container smoke checks ran on GitHub's Linux runner. Kubernetes deployment remains pending, and no deployment is claimed.
