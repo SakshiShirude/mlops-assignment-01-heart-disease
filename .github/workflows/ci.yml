@@ -23,6 +23,36 @@ jobs:
         run: python -m src.eda
       - name: Train and track experiments
         run: python -m src.train
+      - name: Build and smoke test Docker container
+        run: |
+          set -euo pipefail
+          docker build -t heart-disease-api:ci .
+          docker run --detach --name heart-disease-api-ci -p 127.0.0.1:18000:8000 heart-disease-api:ci
+          cleanup() {
+            docker logs heart-disease-api-ci > artifacts/container_logs.txt 2>&1 || true
+            docker rm --force heart-disease-api-ci >/dev/null 2>&1 || true
+          }
+          trap cleanup EXIT
+          curl --retry 30 --retry-connrefused --retry-delay 2 --max-time 120 \
+            --silent --show-error --fail \
+            http://127.0.0.1:18000/health > artifacts/container_health.json
+          curl --silent --show-error --fail \
+            --header 'Content-Type: application/json' \
+            --data '{"age":57,"sex":1,"cp":2,"trestbps":130,"chol":236,"fbs":0,"restecg":0,"thalach":174,"exang":0,"oldpeak":0.0,"slope":1,"ca":0,"thal":2}' \
+            http://127.0.0.1:18000/predict > artifacts/container_predict.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          health = json.loads(Path("artifacts/container_health.json").read_text())
+          prediction = json.loads(Path("artifacts/container_predict.json").read_text())
+          assert health == {"status": "ok", "model_loaded": True}, health
+          assert prediction["prediction"] in (0, 1), prediction
+          assert 0 <= prediction["confidence"] <= 1, prediction
+          assert 0 <= prediction["probability_disease_present"] <= 1, prediction
+          print("Container /health and /predict checks passed")
+          print(json.dumps({"health": health, "prediction": prediction}, indent=2))
+          PY
       - name: Upload training outputs
         if: always()
         uses: actions/upload-artifact@v4
