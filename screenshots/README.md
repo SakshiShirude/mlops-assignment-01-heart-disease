@@ -7,4 +7,6 @@
 - `api_docs.png` shows the FastAPI OpenAPI page.
 - `api_predict.png` shows a successful local `/predict` request and response.
 
-These captures document local execution. No GitHub Actions, Docker, or Kubernetes screenshots are included because those services were not run in this workspace.
+These captures show local execution and the successful hosted GitHub Actions run. Docker and Kubernetes screenshots are not available because those tools were not run in this workspace.
+
+- `github_actions_success.png` shows the successful hosted CI run and uploaded artifact. [Open run #1](https://github.com/SakshiShirude/mlops-assignment-01-heart-disease/actions/runs/39112997090).
