@@ -118,7 +118,7 @@ The API emits structured operational log fields for each request and offers `/he
 - [x] Local pytest and Ruff checks passed; hosted GitHub Actions run #6 passed (see `screenshots/docker_container_ci_run.png`).
 - [x] GitHub Actions built and ran the Docker container; response bodies and container logs are saved under `screenshots/`.
 - [x] Capture `kubectl get pods,svc` and Kubernetes deployment verification (see `screenshots/k8s_deployment.png`).
-- [ ] Record the requested short pipeline video.
+- [x] Record the requested short pipeline video (demonstration link provided in submission report).
 - [x] GitHub repository: https://github.com/SakshiShirude/mlops-assignment-01-heart-disease. Local and Prayogshala API instructions are provided above.
 
 The repository is published at https://github.com/SakshiShirude/mlops-assignment-01-heart-disease. Docker containerization was verified locally and on GitHub Actions; Kubernetes deployment was completed and verified using Minikube on BITS Prayogshala and Docker Desktop locally.
